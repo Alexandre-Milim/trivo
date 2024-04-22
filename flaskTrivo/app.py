@@ -3,32 +3,32 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/sitetrivo'  # Corrigido o nome da base de dados
-app.config['SECRET_KEY'] = 'sua_chave_secreta_aqui'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/sitetrivo'
+app.config['SECRET_KEY'] = '12345678'
 db = SQLAlchemy(app)
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)  # Ajustada a largura do campo email
-    senha = db.Column(db.String(255), nullable=False)  # Ajustada a largura do campo senha
-    nome_usuario = db.Column(db.String(255), nullable=False)  # Ajustada a largura do campo nome_usuario
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    senha = db.Column(db.String(255), nullable=False)
+    nome_usuario = db.Column(db.String(255), nullable=False)
 
 class Receita(db.Model):
     __tablename__ = 'receitas'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nome_receita = db.Column(db.String(255), nullable=False)  # Ajustada a largura do campo nome_receita
-    valor = db.Column(db.Float, nullable=False)  # Ajustada a precisão do campo valor
-    data = db.Column(db.Date, nullable=False)  # Ajustada a data para o tipo Date
+    nome_receita = db.Column(db.String(255), nullable=False)
+    valor = db.Column(db.Float, nullable=False)
+    data = db.Column(db.Date, nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
     usuario = db.relationship('Usuario', backref=db.backref('receitas', lazy=True))
 
-class Despesa(db.Model):  # Adicionada a classe Despesa para a tabela despesas
+class Despesa(db.Model):
     __tablename__ = 'despesas'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    valor = db.Column(db.Float, nullable=False)  # Ajustada a precisão do campo valor
-    data = db.Column(db.Date, nullable=False)  # Ajustada a data para o tipo Date
-    nome_despesa = db.Column(db.String(255), nullable=False)  # Ajustada a largura do campo nome_despesa
+    valor = db.Column(db.Float, nullable=False)
+    data = db.Column(db.Date, nullable=False)
+    nome_despesa = db.Column(db.String(255), nullable=False)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
     usuario = db.relationship('Usuario', backref=db.backref('despesas', lazy=True))
 
